@@ -27,4 +27,19 @@
 		
 5. Login to AWS and choose cloudWatch --> under log group you will find the log group created by the cloudwatch agent
 6. Create an alarm by extracting the word "inactive" from the logs
-7. Create an SNS topic and attach to the CloudWatch agent to trigger it when there is a breach. 
+7. Create an SNS topic and attach to the CloudWatch agent to trigger it when there is a breach.
+
+###### NOTE IF THE CloudWatch Agent is not able to send the data to cloudWatch dashboad, then it might be permissions issue
+	go to the path : - /opt/aws/amazon-cloudwatch-agent/bin/
+		here you need to edit config.json file
+			"agent": {
+				"metrics_collection_interval": 60,
+				"run_as_user": "cwagent" [ replace cwagent with root]
+			},
+reload the configuration file 
+	sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
+
+restart the services
+	sudo systemctl restart amazon-cloudwatch-agent.service
+
+Now you should see the log group specifyed in the config.json file is created and it is sending data to CloudWatch dashbaord
