@@ -1,0 +1,13 @@
+####This document is used to describe the process of enabling crontab and scheduling it to run every 5 mins##
+
+sudo yum install cronie -y
+sudo systemctl start crond
+sudo systemctl enable crond
+sudo systemctl status crond
+
+crontab -e
+##[enter the below line]
+*/5 * * * * /home/user/sum_script.sh  ##[ this is to run your script in every 5 mins ]
+
+## This shows the entry and the script running time as per crond 
+crontab -l 
